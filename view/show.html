@@ -3,23 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Picture Show</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="../css/css.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="show-area">
-    <div id="picarea"></div>
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active">
+            <a href="#type1" data-toggle="tab">
+                Type-1
+            </a>
+        </li>
+        <li><a href="#type2" data-toggle="tab">Type-2</a></li>
+        <li><a href="#type3" data-toggle="tab">Type-3</a></li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active row" id="type1">
+        </div>
+        <div class="tab-pane fade" id="type2">
+            <p>等着放type2</p>
+        </div>
+        <div class="tab-pane fade" id="type3">
+            <p>等着放type3</p>
+        </div>
+
+    </div>
 </div>
 
 </body>
 <script>
     window.onload=function () {
-        for(var i=1;i<11;i++){
-            var parent=document.getElementById('picarea');
-            var insert=document.createElement('img');
-            insert.className='pic';
-            insert.setAttribute('src','/upload/'+i+'.jpg');
+        for(var i=1;i<11;i++) {
+            var parent = document.getElementById('type1');
+            var insert = document.createElement('div');
+            insert.className = 'col-sm-6 col-md-3';
+            insert.innerHTML = '<a href="#" class="thumbnail"> <img src="../upload/' + i + '.jpg"alt="通用的占位符缩略图"></a><div class="caption"> <h3>可以显示缩略图</h3></div>'
             parent.appendChild(insert);
+            }
         }
-    }
+    document.getElementById("type1").addEventListener("click",function(e) {
+        // 检查事件源e.targe是否为Li
+        if(e.target && e.target.nodeName.toUpperCase() == "DIV") {
+            alert('get');
+            console.info(e.target);
+            console.log("List item ",e.target.className," was clicked!");
+            // 真正的处理过程在这里
+            document.getElementById('typ1').removeChild(e.target);
+
+        }
+        });
+
 
 </script>
 </html>

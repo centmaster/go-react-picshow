@@ -1,3 +1,16 @@
-a {
-	color: red;
+.pic {
+	width: 30px;
+	height: 30px;
+}
+.show-area{
+	height: 100%;
+	width: 80%;
+	margin:0 auto;
+	overflow: scroll;
+}
+body{
+	margin: 0;
+	padding:0;
+	height: 100vh;
+	width: 100vw;
 }
