@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Picture Show</title>
+</head>
+<body>
+<div class="show-area">
+    <div id="picarea"></div>
+</div>
+
+</body>
+<script>
+    window.onload=function () {
+        for(var i=1;i<11;i++){
+            var parent=document.getElementById('picarea');
+            var insert=document.createElement('img');
+            insert.className='pic';
+            insert.setAttribute('src','/upload/'+i+'.jpg');
+            parent.appendChild(insert);
+        }
+    }
+
+</script>
+</html>

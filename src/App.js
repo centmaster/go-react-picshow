@@ -38,7 +38,7 @@ var App =React.createClass({
     },
     componentWillMount:function () {
       for(var i=1;i<11;i++){
-          var temp ='./static/pic/'+i+'.jpg';
+          var temp ='././'+i+'.jpg';
           this.state.pos.push(temp);
       }
     },
