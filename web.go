@@ -8,7 +8,6 @@ import (
 	"strings"
 	"os"
 	"regexp"
-    "time"
 )
 
 var mux map[string]func(http.ResponseWriter, *http.Request)
@@ -20,18 +19,9 @@ const (
 )
 
 func main() {
-	//http.HandleFunc("/", hello)
+	http.HandleFunc("/", hello)
 	http.HandleFunc("/api",showpic)
 	http.ListenAndServe(":8000", nil)
-	server := http.Server{
-    		Addr:        ":8000",
-    		Handler:     &Myhandler{},
-    		ReadTimeout: 10 * time.Second,
-    	}
-    	mux = make(map[string]func(http.ResponseWriter, *http.Request))
-    	mux["/"] = hello
-    	mux["/api"] = showpic
-    	server.ListenAndServe()
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +51,7 @@ func showpic(w http.ResponseWriter, r *http.Request) {
                 os.Remove("./upload/"+strings.Join(v, "")+".jpg")
             }
         }
-    t, _ := template.ParseFiles(Template_Dir+"test.html")
+    t, _ := template.ParseFiles(Template_Dir+"show.html")
     t.Execute(w,nil)
 
 }

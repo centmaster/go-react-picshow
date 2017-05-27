@@ -40,21 +40,37 @@
             var parent = document.getElementById('type1');
             var insert = document.createElement('div');
             insert.className = 'col-sm-6 col-md-3';
-            insert.innerHTML = '<a href="#" class="thumbnail"> <img src="../upload/' + i + '.jpg"alt="通用的占位符缩略图"></a><div class="caption"> <h3>可以显示缩略图</h3></div>'
+            insert.innerHTML = '<a href="#" class="thumbnail"><img src="././' + i + '.jpg" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"> <h3>可以显示缩略图</h3></div>'
             parent.appendChild(insert);
             }
         }
     document.getElementById("type1").addEventListener("click",function(e) {
+        //console.log(e.target);
         // 检查事件源e.targe是否为Li
-        if(e.target && e.target.nodeName.toUpperCase() == "DIV") {
-            alert('get');
-            console.info(e.target);
-            console.log("List item ",e.target.className," was clicked!");
-            // 真正的处理过程在这里
-            document.getElementById('typ1').removeChild(e.target);
+        if(e.target && e.target.nodeName.toUpperCase() == "IMG") {
+            //console.log(e.target.getAttribute('data-pos'));
+            //在dom中删除节点
+            var removenode = e.target.parentNode.parentNode;
+            //document.getElementById('typ1').removeChild(e.target);
+            document.getElementById("type1").removeChild(removenode);
 
-        }
+            //发送ajax，在后台删除节点
+            deleteitem(e.target.getAttribute('data-pos'));
+             }
         });
+    function deleteitem(x) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST','/api?delete=' + x, false);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log('success');
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
+        xhr.send();
+    }
 
 
 </script>
