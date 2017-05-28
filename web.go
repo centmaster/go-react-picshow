@@ -28,18 +28,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello world!")
 }
 
-func (*Myhandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if h, ok := mux[r.URL.String()]; ok {
-		h(w, r)
-		return
-	}
-	if ok, _ := regexp.MatchString("/css/", r.URL.String()); ok {
-		http.StripPrefix("/css/", http.FileServer(http.Dir("./css/"))).ServeHTTP(w, r)
-	} else {
-		http.StripPrefix("/", http.FileServer(http.Dir("./upload/"))).ServeHTTP(w, r)
-	}
 
-}
 
 func showpic(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()
