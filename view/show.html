@@ -60,7 +60,7 @@
         });
     function deleteitem(x) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST','/api?delete=' + x, false);
+        xhr.open('POST','/api?delete=' + x, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log('success');
