@@ -36,11 +36,11 @@
 </body>
 <script>
     window.onload=function () {
-        for(var i=1;i<11;i++) {
+        for(var i=1;i<15;i++) {
             var parent = document.getElementById('type1');
             var insert = document.createElement('div');
             insert.className = 'col-sm-6 col-md-3';
-            insert.innerHTML = '<a href="#" class="thumbnail"><img src="././' + i + '.jpg" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"> <h3>可以显示缩略图</h3></div>'
+            insert.innerHTML = '<a href="#" class="thumbnail"><img src="../static/' + i + '.jpg" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"> <h3>可以填东西</h3></div>'
             parent.appendChild(insert);
             }
         }
