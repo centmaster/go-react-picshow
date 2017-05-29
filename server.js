@@ -7,8 +7,7 @@ var join = require('path').join;
 
 var fileNames=[];
 
-
-function findSync(startPath) {
+function findSync(x,startPath) {
     var result=[];
     function finder(path) {
         var files=fs.readdirSync(path);
@@ -16,7 +15,7 @@ function findSync(startPath) {
             var fPath=join(path,val);
             var stats=fs.statSync(fPath);
             if(stats.isDirectory()) finder(fPath);
-            if(stats.isFile()&&fPath.indexOf('jpg')>0) result.push(fPath);
+            if(stats.isFile()&&fPath.indexOf('jpg')>0) result.push(x+index+'='+fPath);
         });
 
     }
@@ -35,10 +34,10 @@ function findSync(startPath) {
 
 
 app.get('/',function (req, res, next) {
-    fileNames=findSync('./static/');
-    //精髓了，要不filename是乱码
-    var arr=JSON.stringify(fileNames);
-    res.setHeader("Set-Cookie", arr);
+    fileNames=findSync('a','./static/').concat(findSync('b','./static/'),findSync('c','./static/'))
+    //fileNames=findSync('a','./static/');
+    console.log(fileNames);
+    res.setHeader("Set-Cookie",fileNames);
     next();
 },function (req, res) {
     res.sendFile(path.join(__dirname + '/view/show.html'));

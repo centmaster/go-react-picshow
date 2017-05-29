@@ -37,17 +37,16 @@
 <script>
 
     window.onload=function () {
-        var pos=[];
-        var _object=JSON.parse(document.cookie);
-        for(var x in _object){
-            pos.push(_object[x]);
-        }
+        var pos=document.cookie.split(";");
         for(var i=0;i<pos.length;i++) {
-            var parent = document.getElementById('type1');
-            var insert = document.createElement('div');
-            insert.className = 'col-sm-6 col-md-3';
-            insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + pos[i] + '" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"><h3>可以填东西</h3></div>'
-            parent.appendChild(insert);
+            if(pos[i].trim().charAt(0)=='a'){
+                var position=pos[i].slice(pos[i].indexOf('=')+1);
+                var parent = document.getElementById('type1');
+                var insert = document.createElement('div');
+                insert.className = 'col-sm-12 col-md-6';
+                insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + position + '" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"><h3>可以填东西</h3></div>'
+                parent.appendChild(insert);
+                }
             }
         }
     document.getElementById("type1").addEventListener("click",function(e) {
