@@ -46,7 +46,7 @@ app.get('/',function (req, res, next) {
 app.post('/api', function (req,res) {
     if(!isNaN(req.query.delete)){
         var item=req.query.delete;
-        fs.unlink('./'+fileNames[item],function (err) {
+        fs.unlink('./'+fileNames[item].slice(fileNames[item].indexOf('=')+1),function (err) {
             if(err) {
                 console.log(err);
             }else{
