@@ -64,7 +64,7 @@ app.get('/api/getpos',function (req, res) {
 app.use('/static/',express.static(path.join(__dirname, './static')));
 app.use('/css/',express.static(path.join(__dirname,'./css')));
 
-app.listen(8080);
+app.listen(1037);
 
 
 
