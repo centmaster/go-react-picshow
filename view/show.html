@@ -37,17 +37,22 @@
 <script>
 
     window.onload=function () {
-        var pos=document.cookie.split(";");
-        for(var i=0;i<pos.length;i++) {
-            if(pos[i].trim().charAt(0)=='a'){
-                var position=pos[i].slice(pos[i].indexOf('=')+1);
-                var parent = document.getElementById('type1');
-                var insert = document.createElement('div');
-                insert.className = 'col-sm-12 col-md-6';
-                insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + position + '" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"><h3>可以填东西</h3></div>'
-                parent.appendChild(insert);
-                }
-            }
+
+        getpos();
+//        var pos=document.cookie.split(";");
+//        for(var i=0;i<pos.length;i++) {
+//            if(pos[i].trim().charAt(0)=='a'){
+//                var position=pos[i].slice(pos[i].indexOf('=')+1);
+//                var parent = document.getElementById('type1');
+//                var insert = document.createElement('div');
+//                insert.className = 'col-sm-12 col-md-6';
+//                insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + position + '" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"><h3>可以填东西</h3></div>'
+//                parent.appendChild(insert);
+//
+//
+//                }
+//            }
+
         }
     document.getElementById("type1").addEventListener("click",function(e) {
         //console.log(e.target);
@@ -71,6 +76,30 @@
                 console.log('success');
             }
         }
+        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
+        xhr.send();
+    }
+
+    function getpos() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET','/api/getpos',true);
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    var res=JSON.parse(xhr.responseText);
+                    var arr=res.slice(1,res.length-1).split(",");
+                    var parent = document.getElementById('type1');
+                    for (var i=0;i<arr.length;i++){
+                        arr[i]=arr[i].slice(1,arr[i].length-1);
+                        var insert = document.createElement('div');
+                        insert.className = 'col-sm-12 col-md-6';
+                        insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图" data-pos="' + i + '"></a><div class="caption"><h3>test</h3></div>'
+                        parent.appendChild(insert);
+                    };
+
+                }
+            }
         xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
         xhr.setRequestHeader("Accept", "application/json");
         xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");

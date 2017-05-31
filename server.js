@@ -15,7 +15,7 @@ function findSync(x,startPath) {
             var fPath=join(path,val);
             var stats=fs.statSync(fPath);
             if(stats.isDirectory()) finder(fPath);
-            if(stats.isFile()&&fPath.indexOf('jpg')>0) result.push(x+index+'='+fPath);
+            if(stats.isFile()&&fPath.indexOf('jpg')>0) result.push(fPath);
         });
 
     }
@@ -34,10 +34,10 @@ function findSync(x,startPath) {
 
 
 app.get('/',function (req, res, next) {
-    fileNames=findSync('a','./static/').concat(findSync('b','./static/'),findSync('c','./static/'))
+    //fileNames=findSync('a','./static/').concat(findSync('b','./static/'),findSync('c','./static/'))
     //fileNames=findSync('a','./static/');
-    console.log(fileNames);
-    res.setHeader("Set-Cookie",fileNames);
+    //console.log(fileNames);
+    //res.setHeader("Set-Cookie",fileNames);
     next();
 },function (req, res) {
     res.sendFile(path.join(__dirname + '/view/show.html'));
@@ -55,6 +55,11 @@ app.post('/api', function (req,res) {
         })
     }
 });
+
+app.get('/api/getpos',function (req, res) {
+    fileNames=findSync('a','./static/');
+    res.json(JSON.stringify(fileNames));
+})
 
 app.use('/static/',express.static(path.join(__dirname, './static')));
 app.use('/css/',express.static(path.join(__dirname,'./css')));
