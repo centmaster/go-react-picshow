@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 var fs = require('fs');
 var join = require('path').join;
+var stream = require('stream');
 
 
 var fileNames=[];
@@ -15,7 +16,7 @@ function findSync(x,startPath) {
             var fPath=join(path,val);
             var stats=fs.statSync(fPath);
             if(stats.isDirectory()) finder(fPath);
-            if(stats.isFile()&&fPath.indexOf('jpg')>0) result.push(fPath);
+            if(stats.isFile()&&fPath.indexOf('jpg')>0 && fPath.indexOf('dirty')<0) result.push(fPath);
         });
 
     }
@@ -46,6 +47,11 @@ app.get('/',function (req, res, next) {
 app.post('/api', function (req,res) {
     if(!isNaN(req.query.delete)){
         var item=req.query.delete;
+        console.log(fileNames);
+        var num=fileNames[item].split('/');
+        var destination=num[0]+'/dirty-'+num[1]+'/'+num[2];
+        var filepos='./'+fileNames[item].slice(fileNames[item].indexOf('=')+1);
+        fs.writeFileSync(destination, fs.readFileSync(filepos));
         fs.unlink('./'+fileNames[item].slice(fileNames[item].indexOf('=')+1),function (err) {
             if(err) {
                 console.log(err);
