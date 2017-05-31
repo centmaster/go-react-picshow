@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="show-area">
-    <ul id="myTab" class="nav nav-tabs">
+    <ul id="myTab" class="nav nav-pills">
         <li class="active">
             <a href="#type1" data-toggle="tab">
                 Type-1
@@ -118,15 +118,17 @@
             xhr.onreadystatechange = function () {
                 if(xhr.readyState == 4 && xhr.status == 200){
                     var res=JSON.parse(xhr.responseText);
-                    var arr=res.slice(1,res.length-1).split(",");
+                    var arr=res.slice(1,res.length-1).split(",");  //sort
                    for (var i=0;i<arr.length;i++){
                        arr[i]=arr[i].replace('.','/');
+                       //console.log(Number(arr[i].split('/')[2]));
                    }
-                   arr.sort(function (a, b) {
-                       //console.log(Number(a.split('/')[2]))
+
+                   arr=arr.sort(function (a, b) {
                        return Number(a.split('/')[2])-Number(b.split('/')[2]);
                    })
-                    for(var i=0;i<arr.length;i++){
+                    //console.log(arr)
+                    for(var i=0;i<arr.length;i++){    //concat together
                        var temp=arr[i].split("").reverse();
                        temp[4]=".";
                        arr[i]=temp.reverse().join("")

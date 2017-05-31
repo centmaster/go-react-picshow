@@ -47,7 +47,7 @@ app.get('/',function (req, res, next) {
 app.post('/api', function (req,res) {
     if(!isNaN(req.query.delete)){
         var item=req.query.delete;
-        console.log(fileNames);
+        //console.log(fileNames);
         var num=fileNames[item].split('/');
         var destination=num[0]+'/dirty-'+num[1]+'/'+num[2];
         var filepos='./'+fileNames[item].slice(fileNames[item].indexOf('=')+1);
