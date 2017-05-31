@@ -11,7 +11,7 @@ function findSync(x,startPath) {
     var result=[];
     function finder(path) {
         var files=fs.readdirSync(path);
-        files.forEach((val,index) => {
+        files.forEach(function(val,index){
             var fPath=join(path,val);
             var stats=fs.statSync(fPath);
             if(stats.isDirectory()) finder(fPath);
@@ -58,6 +58,7 @@ app.post('/api', function (req,res) {
 
 app.get('/api/getpos',function (req, res) {
     fileNames=findSync('a','./static/');
+   // console.log(fileNames);
     res.json(JSON.stringify(fileNames));
 })
 
