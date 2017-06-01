@@ -45,6 +45,7 @@ app.get('/',function (req, res, next) {
 });
 
 app.post('/api', function (req,res) {
+    console.log(req.query);
     if(!isNaN(req.query.delete)){
         var item=req.query.delete;
         //console.log(fileNames);
@@ -56,7 +57,21 @@ app.post('/api', function (req,res) {
             if(err) {
                 console.log(err);
             }else{
-                console.log('success');
+                console.log('success delete');
+            }
+        })
+    }else if(!isNaN(req.query.check)){
+        var item=req.query.check;
+        //console.log(fileNames);
+        var num=fileNames[item].split('/');
+        var destination=num[0]+'/check-'+num[1]+'/'+num[2];
+        var filepos='./'+fileNames[item].slice(fileNames[item].indexOf('=')+1);
+        fs.writeFileSync(destination, fs.readFileSync(filepos));
+        fs.unlink('./'+fileNames[item].slice(fileNames[item].indexOf('=')+1),function (err) {
+            if(err) {
+                console.log(err);
+            }else{
+                console.log('success check');
             }
         })
     }
