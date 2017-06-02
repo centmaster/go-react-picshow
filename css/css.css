@@ -39,3 +39,20 @@ body{
 
 }
 
+#negative{
+	display: none;
+	position: absolute;
+	right: 20%;
+	margin-top: 15px;
+	z-index: 100;
+}
+#positive{
+	position: absolute;
+	right: 20%;
+	margin-top: 15px;
+	z-index: 100;
+}
+.negative{
+	display:none;
+}
+

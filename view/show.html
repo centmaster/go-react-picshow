@@ -11,14 +11,17 @@
 </head>
 <body>
 <div class="show-area">
+    <span class="label label-success positive" id="positive">positive</span>
+    <span class="label label-info negative" id="negative">negative</span>
     <ul id="myTab" class="nav nav-pills">
         <li class="active">
             <a href="#type1" data-toggle="tab">
-                Type-1
+                shijijiayuan
             </a>
         </li>
-        <li><a href="#type2" data-toggle="tab">Type-2</a></li>
-        <li><a href="#type3" data-toggle="tab">Type-3</a></li>
+        <li><a href="#type2" data-toggle="tab">renren</a></li>
+        <li><a href="#type3" data-toggle="tab">chongqing</a></li>
+        <li><a href="#type4" data-toggle="tab">baidu</a></li>
     </ul>
 
     <div id="myTabContent" class="tab-content">
@@ -30,6 +33,9 @@
         <div class="tab-pane fade" id="type3">
 
         </div>
+        <div class="tab-pane fade" id="type4">
+
+        </div>
 
     </div>
 </div>
@@ -37,11 +43,18 @@
 </body>
 <script>
     $(document).ready(function(){
-        $('.show-area').scroll(function(event) {
-            var top = $('.show-area').scrollTop();
-            //console.log('top:'+top);
-        })
+//        $('.show-area').scroll(function(event) {
+//            var top = $('.show-area').scrollTop();
+//            //console.log('top:'+top);
+//        })
     })
+
+//    document.getElementById('positive').addEventListener("click",function () {
+//        document.getElementsByClassName('positive').style.display = 'none';
+//    })
+
+
+
 
     window.onload=function () {
 
@@ -79,6 +92,7 @@
                 //document.getElementById('typ1').removeChild(e.target);
                 document.getElementById("type1").removeChild(removenode);
                 //发送ajax，在后台删除节点
+                //console.log(e.target.getAttribute('data-pos'));
                 checkitem(e.target.getAttribute('data-pos'));
                 }
              }
@@ -121,10 +135,33 @@
                 //document.getElementById('typ1').removeChild(e.target);
                 document.getElementById("type3").removeChild(removenode);
                 //发送ajax，在后台删除节点
+                console.log(e.target.getAttribute('data-pos'));
                 checkitem(e.target.getAttribute('data-pos'));
             }
         }
     });
+
+    document.getElementById("type4").addEventListener("click",function(e) {
+        //console.log(e.target);
+        // 检查事件源e.targe是否为Li
+        if(e.target && e.target.nodeName.toUpperCase() == "BUTTON") {
+            //console.log(e.target.getAttribute('data-pos'));
+            if(e.target.innerHTML=='delete') {
+                var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                document.getElementById("type4").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                deleteitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='check'){
+                var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                document.getElementById("type4").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                checkitem(e.target.getAttribute('data-pos'));
+            }
+        }
+    });
+
     function deleteitem(x) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST','/api?delete=' + x, true);
@@ -159,48 +196,81 @@
             xhr.open('GET','/api/getpos',true);
             xhr.onreadystatechange = function () {
                 if(xhr.readyState == 4 && xhr.status == 200){
-                    var res=JSON.parse(xhr.responseText);
-                    var arr=res.slice(1,res.length-1).split(",");  //sort
-                   for (var i=0;i<arr.length;i++){
-                       arr[i]=arr[i].replace('.','/');
-                       //console.log(Number(arr[i].split('/')[2]));
-                   }
-
-                   arr=arr.sort(function (a, b) {
-                       return Number(a.split('/')[2])-Number(b.split('/')[2]);
-                   })
-                    //console.log(arr)
-                    for(var i=0;i<arr.length;i++){    //concat together
-                       var temp=arr[i].split("").reverse();
-                       temp[4]=".";
-                       arr[i]=temp.reverse().join("")
-                    }
-                    //console.log(arr);
+                    var arr=JSON.parse(xhr.responseText).split(",");
+                    console.log(arr[1]);
                     //console.log(arr[10].charAt(arr[10].indexOf('/')+1));
                     for (var i=0;i<arr.length;i++){
                         if(arr[i].charAt(arr[i].indexOf('/')+1) == 1) {
                             var parent1 = document.getElementById('type1');
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
-                            insert.className = 'col-sm-12 col-md-12';
+                            insert.className = 'col-sm-12 col-md-12 positive';
                             insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
                             parent1.appendChild(insert);
                         }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 2){
                             var parent2 = document.getElementById('type2');
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
-                            insert.className = 'col-sm-12 col-md-12';
+                            insert.className = 'col-sm-12 col-md-12 positive';
                             insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
                             parent2.appendChild(insert);
                         }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 3){
+                            console.log(i);
                             var parent3 = document.getElementById('type3');
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
-                            insert.className = 'col-sm-12 col-md-12';
+                            insert.className = 'col-sm-12 col-md-12 positive';
                             insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
                             parent3.appendChild(insert);
+                        }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 4){
+                            var parent4 = document.getElementById('type4');
+                            arr[i] = arr[i].slice(1, arr[i].length - 1);
+                            var insert = document.createElement('div');
+                            insert.className = 'col-sm-12 col-md-12 positive';
+                            insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            parent4.appendChild(insert);
+                        }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 5){
+                            var parent5 = document.getElementById('type1');
+                            arr[i] = arr[i].slice(1, arr[i].length - 1);
+                            var insert = document.createElement('div');
+                            insert.className = 'col-sm-12 col-md-12 negative';
+                            insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            parent5.appendChild(insert);
+                        }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 6){
+                            var parent6 = document.getElementById('type2');
+                            arr[i] = arr[i].slice(1, arr[i].length - 1);
+                            var insert = document.createElement('div');
+                            insert.className = 'col-sm-12 col-md-12 negative';
+                            insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            parent6.appendChild(insert);
+                        }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 7){
+                            var parent7 = document.getElementById('type3');
+                            arr[i] = arr[i].slice(1, arr[i].length - 1);
+                            var insert = document.createElement('div');
+                            insert.className = 'col-sm-12 col-md-12 negative';
+                            insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            parent7.appendChild(insert);
+                        }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 8){
+                            var parent8 = document.getElementById('type4');
+                            arr[i] = arr[i].slice(1, arr[i].length - 1);
+                            var insert = document.createElement('div');
+                            insert.className = 'col-sm-12 col-md-12 negative';
+                            insert.innerHTML = '<a href="#" class="thumbnail"><img src="../' + arr[i] + '" alt="通用的占位符缩略图"></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">delete</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            parent8.appendChild(insert);
                         }
+
                     };
+
+                    $('#positive').click(function () {
+                        $('.positive').hide();
+                        $('.negative').show();
+
+                    });
+                    $('#negative').click(function () {
+                        $('.positive').show();
+                        $('.negative').hide();
+
+                    })
 
 
 //                    $('.show-area').scroll(function(event) {

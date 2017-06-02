@@ -48,7 +48,7 @@ app.post('/api', function (req,res) {
     console.log(req.query);
     if(!isNaN(req.query.delete)){
         var item=req.query.delete;
-        //console.log(fileNames);
+        console.log(fileNames);
         var num=fileNames[item].split('/');
         var destination=num[0]+'/dirty-'+num[1]+'/'+num[2];
         var filepos='./'+fileNames[item].slice(fileNames[item].indexOf('=')+1);
@@ -62,7 +62,7 @@ app.post('/api', function (req,res) {
         })
     }else if(!isNaN(req.query.check)){
         var item=req.query.check;
-        //console.log(fileNames);
+        console.log(fileNames);
         var num=fileNames[item].split('/');
         var destination=num[0]+'/check-'+num[1]+'/'+num[2];
         var filepos='./'+fileNames[item].slice(fileNames[item].indexOf('=')+1);
@@ -79,7 +79,23 @@ app.post('/api', function (req,res) {
 
 app.get('/api/getpos',function (req, res) {
     fileNames=findSync('a','./static/');
-   // console.log(fileNames);
+    var arr=fileNames;
+    for (var i=0;i<arr.length;i++){
+        arr[i]=arr[i].replace('.','/');
+        //console.log(Number(arr[i].split('/')[2]));
+    }
+
+    arr=arr.sort(function (a, b) {
+        return Number(a.split('/')[2])-Number(b.split('/')[2]);
+    })
+    //console.log('arr:'+arr);
+    for(var i=0;i<arr.length;i++){    //concat together
+        var temp=arr[i].split("").reverse();
+        temp[3]=".";
+        arr[i]=temp.reverse().join("")
+    }
+
+    //console.log(arr);
     res.json(JSON.stringify(fileNames));
 })
 
