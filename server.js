@@ -4,7 +4,8 @@ var path = require('path');
 var fs = require('fs');
 var join = require('path').join;
 var stream = require('stream');
-
+var exec = require('child_process').exec;
+var buf = new Buffer(100000000);
 
 var fileNames=[];
 
@@ -52,14 +53,64 @@ app.post('/api', function (req,res) {
         var num=fileNames[item].split('/');
         var destination=num[0]+'/dirty-'+num[1]+'/'+num[2];
         var filepos='./'+fileNames[item].slice(fileNames[item].indexOf('=')+1);
-        fs.writeFileSync(destination, fs.readFileSync(filepos));
-        fs.unlink('./'+fileNames[item].slice(fileNames[item].indexOf('=')+1),function (err) {
-            if(err) {
-                console.log(err);
-            }else{
-                console.log('success delete');
+        // fs.writeFileSync(destination, fs.readFileSync(filepos));
+        // fs.unlink('./'+fileNames[item].slice(fileNames[item].indexOf('=')+1),function (err) {
+        //     if(err) {
+        //         console.log(err);
+        //     }else{
+        //         console.log('success delete');
+        //     }
+        // })
+        //var arg1='/home/qincheng/transfer/xinjiang/xinjiang/query';
+        var dest='/home/qincheng/transfer/xinjiang/xinjiang/query/picture-show/static/'+num[1];
+        var n=req.query.clickcount;
+        var clusterpos='./'+num[0]+'/'+num[1]+'/dirtycluster.list';
+        var clusterrow=num[2].split('.')[0];
+        var end = parseInt(clusterrow)+1;
+        var clustersource;
+        console.log(clusterrow)
+        //console.log(clusterpos);
+        console.log("准备打开已存在的文件！");
+        fs.open(clusterpos, 'r+', function(err, fd) {
+            if (err) {
+                return console.error(err);
             }
-        })
+            console.log("文件打开成功！");
+            console.log("准备读取文件：");
+            fs.read(fd, buf, 0, buf.length, 0, function(err, bytes){
+                if (err){
+                    console.log(err);
+                }
+                console.log(bytes + "  字节被读取");
+
+                // 仅输出读取的字节
+                if(bytes > 0){
+                    var index=buf.slice(0, bytes).toString().indexOf(clusterrow)+clusterrow.length+5;
+                    var endindex=buf.slice(0, bytes).toString().indexOf(end);
+                    console.log('beg:'+index+'end:'+endindex);
+                    console.log('!!!:'+buf.slice(0, bytes).toString().slice(index,endindex));
+                    clustersource=buf.slice(0, bytes).toString().slice(index,endindex)
+                }
+                fs.close(fd, function(err){
+                    if (err){
+                        console.log(err);
+                    }
+                    console.log("文件关闭成功");
+                });
+            });
+        });
+        exec('python /home/qincheng/test/checkdirtytools/ClusterAndMakeThumb.py'+' '+clustersource+' '+dest+' '+n+' ',function(error,stdout,stderr){
+            if(stdout.length >1){
+                console.log('you offer args:',stdout);
+            } else {
+                console.log('you don\'t offer args');
+            }
+            if(error) {
+                console.info('stderr : '+stderr);
+            }
+        });
+        res.send('success');
+
     }else if(!isNaN(req.query.check)){
         var item=req.query.check;
         console.log(fileNames);
@@ -72,6 +123,7 @@ app.post('/api', function (req,res) {
                 console.log(err);
             }else{
                 console.log('success check');
+                res.end('success');
             }
         })
     }
