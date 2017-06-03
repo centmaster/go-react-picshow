@@ -42,6 +42,7 @@
 
 </body>
 <script>
+    var statearr=[];
     $(document).ready(function(){
 //        $('.show-area').scroll(function(event) {
 //            var top = $('.show-area').scrollTop();
@@ -53,7 +54,16 @@
 //        document.getElementsByClassName('positive').style.display = 'none';
 //    })
 
-
+//    function insertData2Dom(data, container){
+//        var html = "<div>"+""safsdf
+//        $(container).append(html)
+//    }
+//
+//var sock = new WebSocket(url)
+//    sock.addEventListener("", function(e){
+//        e.data
+//        insertData2Dom(data, "#type1")
+//    })
 
 
     window.onload=function () {
@@ -84,7 +94,7 @@
             if(e.target.innerHTML=='cluster') {
                 var count=e.target.parentNode.getAttribute("click-count");
                 e.target.parentNode.setAttribute('click-count',++count);
-                var removenode = e.target.parentNode;
+                //var removenode = e.target.parentNode;
                 //document.getElementById('typ1').removeChild(e.target);
                 //document.getElementById("type1").removeChild(removenode);
                 //发送ajax，在后台删除节点
@@ -96,7 +106,19 @@
                 //发送ajax，在后台删除节点
                 //console.log(e.target.getAttribute('data-pos'));
                 checkitem(e.target.getAttribute('data-pos'));
-                }
+                }else if(e.target.innerHTML=='merge'){
+                //var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                //document.getElementById("type4").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                mergeitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='dirty'){
+                var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                document.getElementById("type1").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                dirtyitem(e.target.getAttribute('data-pos'));
+            }
              }
         });
 
@@ -108,7 +130,7 @@
             if(e.target.innerHTML=='cluster') {
                 var count=e.target.parentNode.getAttribute("click-count");
                 e.target.parentNode.setAttribute('click-count',++count);
-                var removenode = e.target.parentNode;
+                //var removenode = e.target.parentNode;
                 //document.getElementById('typ1').removeChild(e.target);
                 //document.getElementById("type2").removeChild(removenode);
                 //发送ajax，在后台删除节点
@@ -119,6 +141,18 @@
                 document.getElementById("type2").removeChild(removenode);
                 //发送ajax，在后台删除节点
                 checkitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='merge'){
+                //var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                //document.getElementById("type4").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                mergeitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='dirty'){
+                var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                document.getElementById("type2").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                dirtyitem(e.target.getAttribute('data-pos'));
             }
         }
     });
@@ -131,7 +165,7 @@
             if(e.target.innerHTML=='cluster') {
                 var count=e.target.parentNode.getAttribute("click-count");
                 e.target.parentNode.setAttribute('click-count',++count);
-                var removenode = e.target.parentNode;
+                //var removenode = e.target.parentNode;
                 //document.getElementById('typ1').removeChild(e.target);
                // document.getElementById("type3").removeChild(removenode);
                 //发送ajax，在后台删除节点
@@ -141,8 +175,20 @@
                 //document.getElementById('typ1').removeChild(e.target);
                 document.getElementById("type3").removeChild(removenode);
                 //发送ajax，在后台删除节点
-                console.log(e.target.getAttribute('data-pos'));
+                //console.log(e.target.getAttribute('data-pos'));
                 checkitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='merge'){
+                var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                //document.getElementById("type4").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                mergeitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='dirty'){
+                var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                document.getElementById("type3").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                dirtyitem(e.target.getAttribute('data-pos'));
             }
         }
     });
@@ -155,25 +201,75 @@
             if(e.target.innerHTML=='cluster') {
                 var count=e.target.parentNode.getAttribute("click-count");
                 e.target.parentNode.setAttribute('click-count',++count);
-                var removenode = e.target.parentNode;
+                //var removenode = e.target.parentNode;
                 //document.getElementById('typ1').removeChild(e.target);
-                document.getElementById("type4").removeChild(removenode);
+                //document.getElementById("type4").removeChild(removenode);
                 //发送ajax，在后台删除节点
                 deleteitem(e.target.getAttribute('data-pos'),count);
             }else if(e.target.innerHTML=='check'){
                 var removenode = e.target.parentNode;
                 //document.getElementById('typ1').removeChild(e.target);
-                //document.getElementById("type4").removeChild(removenode);
+                document.getElementById("type4").removeChild(removenode);
                 //发送ajax，在后台删除节点
                 checkitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='merge'){
+                //var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                //document.getElementById("type4").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                mergeitem(e.target.getAttribute('data-pos'));
+            }else if(e.target.innerHTML=='dirty'){
+                var removenode = e.target.parentNode;
+                //document.getElementById('typ1').removeChild(e.target);
+                document.getElementById("type4").removeChild(removenode);
+                //发送ajax，在后台删除节点
+                dirtyitem(e.target.getAttribute('data-pos'));
             }
         }
     });
+    
+
 
     function deleteitem(x,y) {
-        console.log("xxxx")
+        //console.log("xxxx")
         var xhr = new XMLHttpRequest();
         xhr.open('POST','/api?delete=' + x+'&&clickcount='+y, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log('success cluster');
+                setTimeout(function () {
+                    senddata(x);
+                },1000)
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
+        xhr.send();
+
+    }
+    function senddata(senddata) {
+        console.log(senddata);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST','/state?state=' + senddata, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log('success');
+
+
+
+                }
+            }
+            xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
+            xhr.send();
+    }
+    
+
+    function checkitem(x) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST','/api?check=' + x, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log('success');
@@ -185,9 +281,24 @@
         xhr.send();
     }
 
-    function checkitem(x) {
+
+    function mergeitem(x) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST','/api?check=' + x, true);
+        xhr.open('POST','/api?merge=' + x, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log('success');
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
+        xhr.send();
+    }
+
+    function dirtyitem(x) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST','/api?dirty=' + x, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log('success');
@@ -206,6 +317,7 @@
             xhr.onreadystatechange = function () {
                 if(xhr.readyState == 4 && xhr.status == 200){
                     var arr=JSON.parse(xhr.responseText).split(",");
+                    statearr=arr;
                     console.log(arr[1]);
                     //console.log(arr[10].charAt(arr[10].indexOf('/')+1));
                     for (var i=0;i<arr.length;i++){
@@ -243,28 +355,28 @@
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
                             insert.className = 'col-sm-12 col-md-12 negative';
-                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">cluster</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">dirty</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">merge</button>'
                             parent5.appendChild(insert);
                         }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 6){
                             var parent6 = document.getElementById('type2');
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
                             insert.className = 'col-sm-12 col-md-12 negative';
-                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">cluster</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">dirty</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">merge</button>'
                             parent6.appendChild(insert);
                         }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 7){
                             var parent7 = document.getElementById('type3');
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
                             insert.className = 'col-sm-12 col-md-12 negative';
-                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">cluster</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">dirty</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">merge</button>'
                             parent7.appendChild(insert);
                         }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 8){
                             var parent8 = document.getElementById('type4');
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
                             insert.className = 'col-sm-12 col-md-12 negative';
-                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">cluster</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
+                            insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">dirty</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">merge</button>'
                             parent8.appendChild(insert);
                         }
 
