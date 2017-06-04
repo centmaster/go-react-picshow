@@ -8,28 +8,18 @@ var exec = require('child_process').exec;
 var buf = new Buffer(1000000);
 
 var fileNames=[];
-var state = {};
-
-function watch(x) {
-    console.log(x);
-    var change = false;
+var changeState=[];
 
 
-    fs.watch('./'+x, function (event, filename) {
+    fs.watch('./static/2', function (event, filename) {
         console.log('event is: ' + event);
         if (filename) {
             console.log('filename provided: ' + filename);
-            if(!change){
-                state[filename] = true;
-                console.log('111111111');
-            }
-            change = true;
+            changeState.push('./static/2/'+filename);
         } else {
             console.log('filename not provided');
         }
-    });
-
-}
+    })
 
 
 function findSync(x,startPath) {
@@ -68,9 +58,8 @@ app.get('/',function (req, res, next) {
     res.sendFile(path.join(__dirname + '/view/show.html'));
 });
 
-app.post('/state',function (req, res) {
-    console.log(req.query);
-    res.send(state[fileNames[req.query.state]]);
+app.get('/state',function (req, res) {
+    res.send(JSON.stringify(changeState));
     //state[fileNames[req.query.state]]
 })
 
@@ -129,7 +118,6 @@ app.post('/api', function (req,res) {
         //         });
         //     });
         // });
-        watch(fileNames[item]);
         exec('python /home/qincheng/test/checkdirtytools/ClusterAndMakeThumb.py'+' '+fileNames[item]+' '+n+' ',function(error,stdout,stderr){
             if(stdout.length >1){
                 console.log('you offer args:',stdout);
