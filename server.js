@@ -15,7 +15,7 @@ var changeState=[];
         console.log('event is: ' + event);
         if (filename) {
             console.log('filename provided: ' + filename);
-            changeState.push('/static/1/'+filename);
+            changeState.push('static/1/'+filename);
         } else {
             console.log('filename not provided');
         }
@@ -25,7 +25,7 @@ fs.watch('./static/2', function (event, filename) {
     console.log('event is: ' + event);
     if (filename) {
         console.log('filename provided: ' + filename);
-        changeState.push('/static/2/'+filename);
+        changeState.push('static/2/'+filename);
     } else {
         console.log('filename not provided');
     }
@@ -35,7 +35,7 @@ fs.watch('./static/3', function (event, filename) {
     console.log('event is: ' + event);
     if (filename) {
         console.log('filename provided: ' + filename);
-        changeState.push('/static/3/'+filename);
+        changeState.push('static/3/'+filename);
     } else {
         console.log('filename not provided');
     }
@@ -47,7 +47,7 @@ fs.watch('./static/4', function (event, filename) {
     console.log('event is: ' + event);
     if (filename) {
         console.log('filename provided: ' + filename);
-        changeState.push('/static/4/'+filename);
+        changeState.push('static/4/'+filename);
     } else {
         console.log('filename not provided');
     }
@@ -59,7 +59,7 @@ fs.watch('./static/5', function (event, filename) {
     console.log('event is: ' + event);
     if (filename) {
         console.log('filename provided: ' + filename);
-        changeState.push('/static/5/'+filename);
+        changeState.push('static/5/'+filename);
     } else {
         console.log('filename not provided');
     }
@@ -71,7 +71,7 @@ fs.watch('./static/6', function (event, filename) {
     console.log('event is: ' + event);
     if (filename) {
         console.log('filename provided: ' + filename);
-        changeState.push('/static/6/'+filename);
+        changeState.push('static/6/'+filename);
     } else {
         console.log('filename not provided');
     }
@@ -83,7 +83,7 @@ fs.watch('./static/7', function (event, filename) {
     console.log('event is: ' + event);
     if (filename) {
         console.log('filename provided: ' + filename);
-        changeState.push('/static/7/'+filename);
+        changeState.push('static/7/'+filename);
     } else {
         console.log('filename not provided');
     }
@@ -95,7 +95,7 @@ fs.watch('./static/8', function (event, filename) {
     console.log('event is: ' + event);
     if (filename) {
         console.log('filename provided: ' + filename);
-        changeState.push('/static/8/'+filename);
+        changeState.push('static/8/'+filename);
     } else {
         console.log('filename not provided');
     }
@@ -235,7 +235,6 @@ app.post('/api', function (req,res) {
         exec('python /home/qincheng/test/checkdirtytools/mergeClusters.py'+' '+fileNames[item]+' ',function(error,stdout,stderr){
             if(stdout.length >1){
                 console.log('you offer args:',stdout);
-                watch(num[1]);
             } else {
                 console.log('you don\'t offer args');
             }
@@ -245,8 +244,8 @@ app.post('/api', function (req,res) {
         });
         res.send('success');
     }else if(!isNaN(req.query.dirty)){
-        var item=req.query.check;
-        console.log(fileNames);
+        var item=req.query.dirty;
+        console.log(fileNames[item]);
         var num=fileNames[item].split('/');
         var destination=num[0]+'/dirty-'+num[1]+'/'+num[2];
         var filepos='./'+fileNames[item].slice(fileNames[item].indexOf('=')+1);
@@ -255,7 +254,7 @@ app.post('/api', function (req,res) {
             if(err) {
                 console.log(err);
             }else{
-                console.log('success check');
+                console.log('success dirty');
                 res.end('success');
             }
         })

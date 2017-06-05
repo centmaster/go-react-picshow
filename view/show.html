@@ -92,7 +92,7 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var rowarr=xhr.responseText;
                     //console.log(Object.prototype.toString.call(rowarr));
-                    //console.log(rowarr.length);
+                    console.log(rowarr);
                     if(rowarr.length>2) {
                     rowarr=rowarr.slice(1,rowarr.length-1);
                     rowarr=rowarr.split(",");
@@ -101,21 +101,22 @@
                         var arr = rowarr.filter(function (element, index, self) {
                             return self.indexOf(element) === index;
                         });
-                    console.log(arr);
+                    //console.log(arr);
 //                    var children=document.getElementById('type2').getElementsByTagName('img');
 //                    for(var i=0;i<children.length;i++){
 //                        console.log(children[i].src.indexOf('/static/2/5_check.jpg'));
 //                    }
                         arr.forEach(function (ele, index, self) {
-                            var position = ele.split('/')[2];
+                            var position = (ele.split('/')[1])%4;
+                            position==0?4:position;
                             ele = ele.slice(1, ele.length - 1);
-                            console.log(ele);
+                            console.log(position);
                             var children = document.getElementById('type' + position).getElementsByTagName('img');
                             for (var i = 0; i < children.length; i++) {
-                                console.log(children[i].src);
+                                //console.log(children[i].src);
                                 if (children[i].src.indexOf(ele) > 0) {
                                     var target = children[i];
-                                    children[i].parentNode.innerHTML = '<img src="..' + ele + '" alt="通用的占位" >'
+                                    children[i].src=ele+'?'+Math.random();
                                 }
                             }
                             //先区分文件夹，然后根据位置更新这个节点。更新完之后再清空changeState这个数组。当然这就需要再一个rest请求
@@ -303,9 +304,7 @@
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log('success cluster');
-                setTimeout(function () {
-                    senddata(x);
-                },1000)
+
             }
         }
         xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
@@ -314,23 +313,7 @@
         xhr.send();
 
     }
-    function senddata(senddata) {
-        console.log(senddata);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST','/state?state=' + senddata, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    console.log('success');
 
-
-
-                }
-            }
-            xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
-            xhr.send();
-    }
     
 
     function checkitem(x) {
