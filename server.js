@@ -11,15 +11,97 @@ var fileNames=[];
 var changeState=[];
 
 
-    fs.watch('./static/2', function (event, filename) {
+    fs.watch('./static/1', function (event, filename) {
         console.log('event is: ' + event);
         if (filename) {
             console.log('filename provided: ' + filename);
-            changeState.push('./static/2/'+filename);
+            changeState.push('/static/1/'+filename);
         } else {
             console.log('filename not provided');
         }
     })
+
+fs.watch('./static/2', function (event, filename) {
+    console.log('event is: ' + event);
+    if (filename) {
+        console.log('filename provided: ' + filename);
+        changeState.push('/static/2/'+filename);
+    } else {
+        console.log('filename not provided');
+    }
+})
+
+fs.watch('./static/3', function (event, filename) {
+    console.log('event is: ' + event);
+    if (filename) {
+        console.log('filename provided: ' + filename);
+        changeState.push('/static/3/'+filename);
+    } else {
+        console.log('filename not provided');
+    }
+})
+
+
+
+fs.watch('./static/4', function (event, filename) {
+    console.log('event is: ' + event);
+    if (filename) {
+        console.log('filename provided: ' + filename);
+        changeState.push('/static/4/'+filename);
+    } else {
+        console.log('filename not provided');
+    }
+})
+
+
+
+fs.watch('./static/5', function (event, filename) {
+    console.log('event is: ' + event);
+    if (filename) {
+        console.log('filename provided: ' + filename);
+        changeState.push('/static/5/'+filename);
+    } else {
+        console.log('filename not provided');
+    }
+})
+
+
+
+fs.watch('./static/6', function (event, filename) {
+    console.log('event is: ' + event);
+    if (filename) {
+        console.log('filename provided: ' + filename);
+        changeState.push('/static/6/'+filename);
+    } else {
+        console.log('filename not provided');
+    }
+})
+
+
+
+fs.watch('./static/7', function (event, filename) {
+    console.log('event is: ' + event);
+    if (filename) {
+        console.log('filename provided: ' + filename);
+        changeState.push('/static/7/'+filename);
+    } else {
+        console.log('filename not provided');
+    }
+})
+
+
+
+fs.watch('./static/8', function (event, filename) {
+    console.log('event is: ' + event);
+    if (filename) {
+        console.log('filename provided: ' + filename);
+        changeState.push('/static/8/'+filename);
+    } else {
+        console.log('filename not provided');
+    }
+})
+
+
 
 
 function findSync(x,startPath) {
@@ -86,7 +168,7 @@ app.post('/api', function (req,res) {
         var clusterrow=num[2].split('.')[0];
         var end = parseInt(clusterrow)+1;
         var clustersource;
-        state[num[2]]=false;
+        //state[num[2]]=false;
         console.log('picture url:'+fileNames[item]);
         //console.log(clusterpos);
         // console.log("准备打开已存在的文件！");
@@ -201,6 +283,12 @@ app.get('/api/getpos',function (req, res) {
 
     //console.log(arr);
     res.json(JSON.stringify(fileNames));
+})
+
+app.post('/cleararr',function (req, res) {
+    console.log('receive clear commd');
+    changeState=[];
+    res.send('success clear')
 })
 
 app.use('/static/',express.static(path.join(__dirname, './static')));

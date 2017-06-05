@@ -43,36 +43,15 @@
 </body>
 <script>
 
-//    $(document).ready(function(){
+    $(document).ready(function(){
+        getpos();
+    })
 //        $('.show-area').scroll(function(event) {
 //            var top = $('.show-area').scrollTop();
 //            //console.log('top:'+top);
 //        })
 //    })
-    setInterval(function () {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET','/state', true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var rowarr=xhr.responseText;
-                console.log(rowarr);
-                rowarr=rowarr.slice(1,rowarr.length-1);
-                rowarr=rowarr.split(",");
 
-                var arr = rowarr.filter(function (element, index, self) {
-                    return self.indexOf(element) === index;
-                });
-
-                arr.forEach()   //先区分文件夹，然后根据位置更新这个节点。更新完之后再清空changeState这个数组。当然这就需要再一个rest请求
-
-                console.log(arr);
-            }
-        }
-        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
-        xhr.send();
-    },1000);
 //    document.getElementById('positive').addEventListener("click",function () {
 //        document.getElementsByClassName('positive').style.display = 'none';
 //    })
@@ -91,7 +70,8 @@
 
     window.onload=function () {
 
-        getpos();
+
+
 //        var pos=document.cookie.split(";");
 //        for(var i=0;i<pos.length;i++) {
 //            if(pos[i].trim().charAt(0)=='a'){
@@ -105,9 +85,56 @@
 //
 //                }
 //            }
+        setInterval(function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET','/state', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var rowarr=xhr.responseText;
+                    //console.log(Object.prototype.toString.call(rowarr));
+                    //console.log(rowarr.length);
+                    if(rowarr.length>2) {
+                    rowarr=rowarr.slice(1,rowarr.length-1);
+                    rowarr=rowarr.split(",");
+                    //console.log(rowarr);
 
+                        var arr = rowarr.filter(function (element, index, self) {
+                            return self.indexOf(element) === index;
+                        });
+                    console.log(arr);
+//                    var children=document.getElementById('type2').getElementsByTagName('img');
+//                    for(var i=0;i<children.length;i++){
+//                        console.log(children[i].src.indexOf('/static/2/5_check.jpg'));
+//                    }
+                        arr.forEach(function (ele, index, self) {
+                            var position = ele.split('/')[2];
+                            ele = ele.slice(1, ele.length - 1);
+                            console.log(ele);
+                            var children = document.getElementById('type' + position).getElementsByTagName('img');
+                            for (var i = 0; i < children.length; i++) {
+                                console.log(children[i].src);
+                                if (children[i].src.indexOf(ele) > 0) {
+                                    var target = children[i];
+                                    children[i].parentNode.innerHTML = '<img src="..' + ele + '" alt="通用的占位" >'
+                                }
+                            }
+                            //先区分文件夹，然后根据位置更新这个节点。更新完之后再清空changeState这个数组。当然这就需要再一个rest请求
+                        })
+
+                        cleararr();
+                    }
+
+                }
+            }
+            xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
+            xhr.send();
+        },1000);
 
         }
+
+
     document.getElementById("type1").addEventListener("click",function(e) {
         //console.log(e.target);
         // 检查事件源e.targe是否为Li
@@ -250,7 +277,23 @@
             }
         }
     });
-    
+
+
+    function cleararr() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST','/cleararr', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log('success clear the arr');
+
+
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost");
+        xhr.send();
+    }
 
 
     function deleteitem(x,y) {
@@ -354,6 +397,7 @@
                             arr[i] = arr[i].slice(1, arr[i].length - 1);
                             var insert = document.createElement('div');
                             insert.className = 'col-sm-12 col-md-12 positive';
+                            insert.setAttribute('savesrc',arr[i]);
                             insert.innerHTML = '<a href="#" class="thumbnail" ><img src="../' + arr[i] + '" alt="通用的占位符缩略图" ></a><button class="btn btn-primary btn-bottom" data-pos="' + i + '">cluster</button><button class="btn btn-primary btn-bottom" data-pos="' + i + '">check</button>'
                             parent2.appendChild(insert);
                         }else if(arr[i].charAt(arr[i].indexOf('/')+1) == 3){
